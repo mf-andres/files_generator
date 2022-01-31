@@ -14,12 +14,16 @@ def test_returns_converter_with_proper_file_contents():
     class_file_contents = class_file_contents_mother.get_class_file_contents()
     converter_generator = ObjectToItemConverterGenerator()
     converter = converter_generator.generate(class_file_contents)
-    expected_converter_file_contents = """def convert(example_item: ExampleItem) -> Example:
-    return Example(
-        example_item.int_,
-        example_item.float_,
-        example_item.str_,
-        example_item.list_,
+    expected_converter_file_contents = """def convert_many(example_list: List[Example]) -> List[ExampleItem]:
+    return [convert(example) for example in example_list]
+
+
+def convert(example: Example) -> ExampleItem:
+    return ExampleItem(
+        int_=example.int_,
+        float_=example.float_,
+        str_=example.str_,
+        list_=example.list_,
     )"""
     converter_has_proper_file_contents = converter.file_contents == expected_converter_file_contents
     assert converter_has_proper_file_contents

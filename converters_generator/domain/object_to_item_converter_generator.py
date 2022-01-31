@@ -27,14 +27,23 @@ class ObjectToItemConverterGenerator(ConverterGenerator):
 
     def __get_file_contents(self, class_name: str, class_file_contents: str) -> str:
         class_attributes = self.__get_class_attributes(class_file_contents)
-        function_definition = f"def convert({class_name.lower()}_item: {class_name}Item) -> {class_name}:"
-        object_instantiation_first_line = f"    return {class_name}("
+        first_function_definition = f"def convert_many({class_name.lower()}_list: List[{class_name}]) -> List[{class_name}Item]:"
+        first_function_implementation = f"    return [convert({class_name.lower()}) for {class_name.lower()} in {class_name.lower()}_list]"
+        second_function_definition = f"def convert({class_name.lower()}: {class_name}) -> {class_name}Item:"
+        object_instantiation_first_line = f"    return {class_name}Item("
         object_instantiation_middle_lines = [
-            f"        {class_name.lower()}_item.{attribute}," for attribute in class_attributes
+            f"        {attribute}={class_name.lower()}.{attribute}," for attribute in class_attributes
         ]
         object_instantiation_last_line = "    )"
         file_contents = "\n".join(
-            [function_definition, object_instantiation_first_line]
+            [
+                first_function_definition,
+                first_function_implementation,
+                "",
+                "",
+                second_function_definition,
+                object_instantiation_first_line
+            ]
             + object_instantiation_middle_lines
             + [object_instantiation_last_line]
         )
@@ -42,7 +51,8 @@ class ObjectToItemConverterGenerator(ConverterGenerator):
 
     def __get_class_attributes(self, class_file_contents: str):
         self_end_index = self.__get_word_end_index(class_file_contents, "self,")
-        first_attribute_line_index = len(class_file_contents[:self_end_index]) + class_file_contents[self_end_index:].find("\n") + 1
+        first_attribute_line_index = len(class_file_contents[:self_end_index]) + class_file_contents[
+                                                                                 self_end_index:].find("\n") + 1
         end_of_init_function_index = class_file_contents.find("):")
         last_attribute_line_end_index = class_file_contents[:end_of_init_function_index].rfind("\n")
         attributes_definition = class_file_contents[first_attribute_line_index: last_attribute_line_end_index]
@@ -53,7 +63,4 @@ class ObjectToItemConverterGenerator(ConverterGenerator):
             attribute_names.append(attribute_name)
             comma_index = line.find(",")
             attribute_type = line[colon_index:comma_index].strip()
-        print()
-        print(first_attribute_line_index)
-        print()
         return attribute_names
