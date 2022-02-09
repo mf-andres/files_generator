@@ -1,4 +1,4 @@
-from converters_generator.domain.utils.class_attributes_retriever import get_class_attributes
+from converters_generator.domain.utils.class_attributes_retriever import get_class_attributes_names_and_types
 from converters_generator.domain.utils.class_name_retriever import get_class_name
 from converters_generator.domain.converter import Converter
 from converters_generator.domain.converter_generator import ConverterGenerator
@@ -20,7 +20,7 @@ class MongoObjectToObjectConverterGenerator(ConverterGenerator):
 
     @staticmethod
     def __get_file_contents(class_name: str, class_file_contents: str) -> str:
-        class_attributes = get_class_attributes(class_file_contents)
+        class_attributes = get_class_attributes_names_and_types(class_file_contents)
         first_function_definition = f"def convert_many({class_name.lower()}s_as_dict: List[dict]) -> List[{class_name}]:"
         first_function_implementation = f"    return [convert({class_name.lower()}_as_dict) for {class_name.lower()}_as_dict in {class_name.lower()}s_as_dict]"
         second_function_definition = f"def convert({class_name.lower()}_as_dict: dict) -> {class_name}:"

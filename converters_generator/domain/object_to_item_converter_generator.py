@@ -1,6 +1,6 @@
 from converters_generator.domain.converter import Converter
 from converters_generator.domain.converter_generator import ConverterGenerator
-from converters_generator.domain.utils.class_attributes_retriever import get_class_attributes
+from converters_generator.domain.utils.class_attributes_retriever import get_class_attributes_names_and_types
 from converters_generator.domain.utils.class_name_retriever import get_class_name
 
 
@@ -20,7 +20,7 @@ class ObjectToItemConverterGenerator(ConverterGenerator):
 
     @staticmethod
     def __get_file_contents(class_name: str, class_file_contents: str) -> str:
-        class_attributes = get_class_attributes(class_file_contents)
+        class_attributes = get_class_attributes_names_and_types(class_file_contents)
         first_function_definition = f"def convert_many({class_name.lower()}_list: List[{class_name}]) -> List[{class_name}Item]:"
         first_function_implementation = f"    return [convert({class_name.lower()}) for {class_name.lower()} in {class_name.lower()}_list]"
         second_function_definition = f"def convert({class_name.lower()}: {class_name}) -> {class_name}Item:"

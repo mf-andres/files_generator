@@ -15,7 +15,7 @@ class ConvertersGenerator:
             MongoObjectToObjectConverterGenerator(),
             ObjectToMongoObjectConverterGenerator(),
         ]
-        generators = [
+        converters = [
             converter_generator.generate(class_file_contents) for converter_generator in converter_generators
         ]
-        return generators
+        return converters
