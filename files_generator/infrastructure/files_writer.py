@@ -3,12 +3,12 @@ from typing import List
 from files_generator.domain.file import File
 
 
-def write_converters(converters: List[File], output_directory: str):
+def write_files(files: List[File], output_directory: str):
     if not os.path.exists(output_directory):
         os.mkdir(output_directory)
     if not os.path.isdir(output_directory):
         raise Exception("Given path is not a directory")
-    [write_converter(converter, output_directory) for converter in converters]
+    [write_converter(converter, output_directory) for converter in files]
 
 
 def write_converter(converter: File, output_directory: str):
