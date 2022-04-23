@@ -15,8 +15,17 @@ class ItemFileGenerator(FileGenerator):
     # TODO from camel case to python case
     @staticmethod
     def __get_file_name(class_name: str) -> str:
-        class_name = class_name.lower()
-        file_name = f"{class_name}_item.py"
+        uppercase_indexes = [index for index, char in enumerate(class_name) if char.isupper()]
+        uppercase_indexes.pop(0)
+        underscored_class_name = class_name
+        for uppercase_index in uppercase_indexes:
+            underscored_class_name = (
+                    underscored_class_name[:uppercase_index]
+                    + "_"
+                    + underscored_class_name[uppercase_index:]
+            )
+        lowered_underscored_class_name = underscored_class_name.lower()
+        file_name = f"{lowered_underscored_class_name}_item.py"
         return file_name
 
     @staticmethod
