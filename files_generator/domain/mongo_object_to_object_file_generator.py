@@ -2,6 +2,7 @@ from files_generator.domain.utils.class_attributes_retriever import get_class_at
 from files_generator.domain.utils.class_name_retriever import get_class_name
 from files_generator.domain.file import File
 from files_generator.domain.file_generator import FileGenerator
+from files_generator.domain.utils.name_underscorer import underscore_name
 
 
 class MongoObjectToObjectFileGenerator(FileGenerator):
@@ -14,8 +15,9 @@ class MongoObjectToObjectFileGenerator(FileGenerator):
 
     @staticmethod
     def __get_file_name(class_name: str) -> str:
-        class_name = class_name.lower()
-        file_name = f"mongo_object_to_{class_name}_converter.py"
+        underscored_class_name = underscore_name(class_name)
+        lowered_underscored_class_name = underscored_class_name.lower()
+        file_name = f"mongo_object_to_{lowered_underscored_class_name}_converter.py"
         return file_name
 
     @staticmethod

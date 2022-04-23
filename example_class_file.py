@@ -2,7 +2,7 @@ import datetime
 from typing import List
 
 
-class ComplexExample:
+class VeryComplexExample:
     def __init__(
         self,
         int_: int,

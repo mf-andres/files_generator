@@ -2,6 +2,7 @@ from files_generator.domain.file import File
 from files_generator.domain.file_generator import FileGenerator
 from files_generator.domain.utils.class_attributes_retriever import get_class_attributes_names_and_types
 from files_generator.domain.utils.class_name_retriever import get_class_name
+from files_generator.domain.utils.name_underscorer import underscore_name
 
 
 class ObjectToItemFileGenerator(FileGenerator):
@@ -14,8 +15,9 @@ class ObjectToItemFileGenerator(FileGenerator):
 
     @staticmethod
     def __get_file_name(class_name: str) -> str:
-        class_name = class_name.lower()
-        file_name = f"{class_name}_to_item_converter.py"
+        underscored_class_name = underscore_name(class_name)
+        lowered_underscored_class_name = underscored_class_name.lower()
+        file_name = f"{lowered_underscored_class_name}_to_item_converter.py"
         return file_name
 
     @staticmethod
